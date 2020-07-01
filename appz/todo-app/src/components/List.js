@@ -12,6 +12,7 @@ export default class List extends Component {
     render() {
         const todoEntries = this.props.entries
         const itemList = todoEntries.map(this.createTask)
+
         return (
             <div className="list">
                 {/* <ul>{itemList}</ul> */}

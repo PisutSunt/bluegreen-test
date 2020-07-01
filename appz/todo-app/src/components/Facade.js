@@ -13,6 +13,9 @@ export default class Facade extends Component {
                 key: ''
             }
         }
+    }
+
+    componentDidMount() {
         this.update()
     }
 
@@ -59,13 +62,17 @@ export default class Facade extends Component {
         })
     }
 
-    update = () => {
-        axios.get('/startup')
-            .then(response => response.json())
-            .then(data => this.setState({ item: data.data }))
+    update = async () => {
+        const { data } = await axios.get('/startup')
+        const { data: item } = data
+        this.setState({ item })
+        // axios.get('/startup')
+        //     .then(response => response.json())
+        //     .then(data => this.setState({ item: data.data }))
     }
 
     render() {
+        const { item, currenItem } = this.state
         return (
             <div className="App">
                 <header className="App-header">
@@ -74,9 +81,9 @@ export default class Facade extends Component {
                         add={this.add}
                         inputElement={this.inputElement}
                         handleInput={this.handleInput}
-                        currentItem={this.state.currenItem}/>
+                        currentItem={currenItem}/>
                     <List
-                        entries={this.state.item}
+                        entries={item}
                         delete={this.delete}/>
                 </header>
             </div>

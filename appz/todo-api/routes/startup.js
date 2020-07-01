@@ -1,5 +1,5 @@
 const mongoClient = require('mongodb').MongoClient
-const url = 'mongodb://todo-db:27017/'
+const url = (process.env.MONGO_CONNECTION || 'mongodb://todo-db:27017/')
 const router = require('express').Router()
 const dbName = 'todo-app'
 const collectionName = 'task'

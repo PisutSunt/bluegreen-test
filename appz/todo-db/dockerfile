@@ -1,4 +1,7 @@
-FROM mongo
+FROM mongo:4.2.8-bionic
 EXPOSE 27017
-VOLUME /todo-data
-CMD [ "mongod", "--dbpath", "/todo-data" ]
+#VOLUME /tmp/todo-data
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+#CMD [ "mongod", "--dbpath", "/todo-data" ]
+CMD ["/entrypoint.sh"]

@@ -1,0 +1,54 @@
+version: "2"
+services:
+  db:
+    build:
+      context: ./todo-db
+    volumes: 
+      - db_data:/todo-data
+      - ./todo-db/entrypoint.sh:/entrypoint.sh
+    command: /entrypoint.sh
+    networks: 
+      backend:
+        aliases: 
+          - todo-db
+  app:
+    build: 
+      context: ./todo-app
+    volumes: 
+      - ./todo-app/public:/app/public
+      - ./todo-app/src:/app/src
+    command: npm start
+    ports: 
+      - 3000:3000
+    depends_on: 
+      - api
+    networks:
+      frontend:
+        aliases: 
+          - todo-app
+  api:
+    build:
+      context: ./todo-api
+    ports: 
+      - 9000:9000
+    depends_on: 
+      - db
+    volumes: 
+      - ./todo-api/bin:/app/bin
+      - ./todo-api/public:/app/public
+      - ./todo-api/routes:/app/routes
+      - ./todo-api/views:/app/views
+      - ./todo-api/app.js:/app/app.js
+    networks:
+      backend: {}
+      frontend:
+        aliases: 
+        - todo-api 
+
+    command: nodemon bin/www --watch app.js --watch routes
+
+networks: 
+  frontend: {}
+  backend: {}
+volumes: 
+  db_data: {}

@@ -4,10 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+const { errorMonitor } = require('stream');
 // var cors = require('cors');
 
 const mongoClient = require('mongodb').MongoClient
-const url = 'todo-db-service.devops-intern.svc.cluster.local:27017'
+const url = process.env.MONGO_CONNECTION_STRING || 'mongodb://todo-db:27017' ///'todo-db-service.devops-intern.svc.cluster.local:27017')
 const dbName = 'todo'
 const collectionName = 'task'
 
@@ -53,21 +54,29 @@ app.get('/startup', async (req, res) => {
 })
 
 
-insert = record => {
+insert = (record, callback) => {
   mongoClient.connect(url, { useUnifiedTopology: true }, (error, db) => {
       if (error) throw error
       const dbObj = db.db(dbName)
       dbObj.collection(collectionName).insertOne(record, (error) => {
-          if (error) throw error
+          if (error) {
+            return callback(error);
+          }
           console.log('inserted record: ', record)
           db.close()
+          callback(null, record)
       })
   })
 }
 
 app.post('/insert', (req, res) => {
   let record = req.body
-  insert(record)
+  insert(record, (error, record) => {
+    if (error) {
+      return res.json({ success: false, message: error.toString() })
+    }
+    res.json({ success: true, record })
+  })
 })
 
 remove = record => {
