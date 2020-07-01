@@ -1,5 +1,5 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const target = 'http://todo-api:9000'
+const target = process.env.PROXY_API_TARGET || 'http://todo-api:9000'
 module.exports = function(app) {
   app.use(
     '/startup',

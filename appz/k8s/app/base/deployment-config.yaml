@@ -1,7 +1,7 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: todo-api-appz
+  name: todo-app-appz
   labels:
     AppVersion: x-app-version-x
     KustomizeCommit: x-kustomize-commit-x
@@ -10,26 +10,21 @@ spec:
   template:
     spec:
       containers:
-      - name: todo-api-appz
-        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/api
+      - name: todo-app-appz
+        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/react
         imagePullPolicy: Always
-        args:
-          - nodemon
-          - bin/www
-          - --watch app.js
-          - --watch routes
         env:
-          - name: MONGO_CONNECTION_STRING
-            value: mongodb://todo-db-appz.devops-intern.svc:27017
+          - name: PROXY_API_TARGET
+            value: http://todo-api-appz.devops-intern.svc:9000
 
         ports:
-        - containerPort: 9000
+        - containerPort: 3000
           name: http
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /
-            port: 9000
+            port: 3000
           failureThreshold: 5
           initialDelaySeconds: 3
           periodSeconds: 10
@@ -38,7 +33,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 9000
+            port: 3000
           failureThreshold: 5
           initialDelaySeconds: 3
           periodSeconds: 10

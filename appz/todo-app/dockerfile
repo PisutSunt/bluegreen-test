@@ -36,4 +36,4 @@ COPY src /app/src
 # RUN npm build
 
 # # run the todo app
-# CMD [ "npm", "start" ]
+CMD [ "npm", "start" ]
