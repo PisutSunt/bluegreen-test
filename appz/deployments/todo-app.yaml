@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: todo-app-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  name: todo-app-appz
+  namespace: devops-intern
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: todo-app-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  type: ClusterIP
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    AppVersion: x-app-version-x
+    KustomizeCommit: x-kustomize-commit-x
+    app: todo-app-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  name: todo-app-appz
+  namespace: devops-intern
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todo-app-appz
+        cluster: ocp-test
+        group: todo-appz
+        template-compiler: kustomize
+    spec:
+      containers:
+      - env:
+        - name: PROXY_API_TARGET
+          value: http://todo-api-appz.devops-intern.svc:9000
+        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/react
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        name: todo-app-appz
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: image-pull-secret-kn000131
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: todo-app-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  name: todo-app-appz
+  namespace: devops-intern
+spec:
+  host: todo-api-appz.devops-intern.apps.ocp-test.kasikornbank.com.172.30.183.115.nip.io
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: todo-app-appz
+    weight: 100

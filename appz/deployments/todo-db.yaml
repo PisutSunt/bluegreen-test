@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: todo-db-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  name: todo-db-appz
+  namespace: devops-intern
+spec:
+  ports:
+  - name: mongo
+    port: 27017
+    targetPort: 27017
+  selector:
+    app: todo-db-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  type: ClusterIP
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    AppVersion: x-app-version-x
+    KustomizeCommit: x-kustomize-commit-x
+    app: todo-db-appz
+    cluster: ocp-test
+    group: todo-appz
+    template-compiler: kustomize
+  name: todo-db-appz
+  namespace: devops-intern
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todo-db-appz
+        cluster: ocp-test
+        group: todo-appz
+        template-compiler: kustomize
+    spec:
+      containers:
+      - image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/db
+        imagePullPolicy: Always
+        name: todo-db-appz
+        ports:
+        - containerPort: 27017
+          name: mongo
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /todo-data
+          name: todo-data
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: image-pull-secret-kn000131
+      volumes:
+      - emptyDir: {}
+        name: todo-data
