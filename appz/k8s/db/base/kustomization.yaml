@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment-config.yaml
+  - services.yaml
+
+namespace: devops-intern
+
+commonLabels:
+  #kscm: devops--ocp-kustomize-examples
+  group: todo-appz
+  cluster: ocp-test
+  app: todo-db-appz
+  template-compiler: kustomize
+
+crds:
+- ./crds/openshift-deploymentconfig.json
+- ./crds/openshift-route.json
+
+configurations:
+- varconfig.yaml
