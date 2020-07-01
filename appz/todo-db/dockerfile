@@ -1,0 +1,4 @@
+FROM mongo
+EXPOSE 27017
+VOLUME /todo-data
+CMD [ "mongod", "--dbpath", "/todo-data" ]
