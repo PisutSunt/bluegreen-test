@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: node-backend
+spec:
+  host: $(DEPLOYMENT_CONFIG_NAME)-appz.$(NAMESPACE).apps.$(LABEL_CLUSTER).kasikornbank.com.172.30.183.115.nip.io
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: node-backend
+    weight: 100
