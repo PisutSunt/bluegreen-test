@@ -6,7 +6,6 @@ services:
       context: ./todo-db
     volumes: 
       - db_data:/todo-data
-      - ./todo-db/entrypoint.sh:/entrypoint.sh
     command: /entrypoint.sh
     networks: 
       backend:
@@ -16,9 +15,6 @@ services:
     image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/react
     build: 
       context: ./todo-app
-    volumes: 
-      - ./todo-app/public:/app/public
-      - ./todo-app/src:/app/src
     command: npm start
     ports: 
       - 3000:3000
@@ -36,12 +32,6 @@ services:
       - 9000:9000
     depends_on: 
       - db
-    volumes: 
-      - ./todo-api/bin:/app/bin
-      - ./todo-api/public:/app/public
-      - ./todo-api/routes:/app/routes
-      - ./todo-api/views:/app/views
-      - ./todo-api/app.js:/app/app.js
     networks:
       backend: {}
       frontend:

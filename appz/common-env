@@ -1,0 +1,2 @@
+export JENKINS_VERSION=2.222.4
+export JENKINS_RESULT_IMAGE=devops-69801-docker.artifactory.kasikornbank.com:8443/jenkins-prod:${JENKINS_VERSION}-jdk11
