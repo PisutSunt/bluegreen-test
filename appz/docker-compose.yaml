@@ -15,7 +15,6 @@ services:
     image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/react
     build: 
       context: ./todo-app
-    command: npm start
     ports: 
       - 3000:3000
     depends_on: 
@@ -37,8 +36,6 @@ services:
       frontend:
         aliases: 
         - todo-api 
-
-    command: nodemon bin/www --watch app.js --watch routes
 
 networks: 
   frontend: {}

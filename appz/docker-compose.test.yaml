@@ -2,19 +2,14 @@ version: "2"
 services:
   db:
     command: /entrypoint.sh
-    networks:
-      trafik: {}
   app:
     volumes: 
       - ./todo-app/public:/app/public
       - ./todo-app/src:/app/src
     command: npm start
-    networks:
-      trafik: {}
-    
+
   api:
     depends_on: 
       - db
     networks:
       trafik: {}
-    command: nodemon bin/www --watch app.js --watch routes
