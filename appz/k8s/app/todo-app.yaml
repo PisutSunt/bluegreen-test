@@ -86,7 +86,7 @@ metadata:
   name: todo-app-appz
   namespace: devops-intern
 spec:
-  host: todo-api-appz.devops-intern.apps.ocp-test.kasikornbank.com.172.30.183.115.nip.io
+  host: todo-app-appz.devops-intern.apps.ocp-test.kasikornbank.com.172.30.183.115.nip.io
   port:
     targetPort: http
   tls:
