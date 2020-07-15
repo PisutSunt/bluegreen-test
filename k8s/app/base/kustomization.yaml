@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment-config.yaml
+- routes.yaml
+- services.yaml
+namespace: devops-intern
+commonLabels:
+  app: todo-app-kn000131
+  cluster: ocp-test
+  group: todo-app
+  template-compiler: kustomize
+crds:
+- ./crds/openshift-deploymentconfig.json
+- ./crds/openshift-route.json
+configurations:
+- varconfig.yaml
+vars:
+- fieldref:
+    fieldPath: metadata.name
+  name: DEPLOYMENT_CONFIG_NAME
+  objref:
+    apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: todo-app-kn000131
+- fieldref:
+    fieldPath: metadata.namespace
+  name: NAMESPACE
+  objref:
+    apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: todo-app-kn000131
+- fieldref:
+    fieldPath: metadata.labels.cluster
+  name: LABEL_CLUSTER
+  objref:
+    apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: todo-app-kn000131
+nameSuffix: -dev

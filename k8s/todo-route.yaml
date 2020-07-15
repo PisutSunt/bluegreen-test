@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: todo-route
+spec:
+  host: todo-route-devops-intern.apps.ocp-test.172.30.183.115.nip.io
+  to:
+    kind: Service
+    name: todo-frontend-service
+    weight: 100
+  tls:
+    termination: edge
+status:
+  ingress:
+  - conditions:
+    - lastTransitionTime: "2020-06-24T09:41:05Z"
+      status: "True"
+      type: Admitted
+    host: todo-route-devops-intern.apps.ocp-test.kasikornbank.com.172.30.183.115.nip.io
+    routerName: router
+    wildcardPolicy: None

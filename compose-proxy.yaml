@@ -1,0 +1,22 @@
+version: "3"
+services:
+    traefik:
+        build:
+            context: ./traefik/
+        container_name: traefik
+        restart: unless-stopped
+        security_opt: 
+            - no-new-privileges:true
+        command: 
+            - --providers.docker
+            - --api.insecure=true
+        ports:
+            - 443:443
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        networks: 
+            - traefik_proxy
+networks:
+    traefik_proxy:
+        # driver: bridge
+        external: true

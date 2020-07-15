@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-api-kn000131
+spec:
+  type: ClusterIP
+  selector:
+    app: todo-api-kn000131
+  ports:
+  - port: 9000
+    targetPort: 9000
+    name: http

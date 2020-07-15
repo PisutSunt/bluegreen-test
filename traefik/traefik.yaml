@@ -1,0 +1,12 @@
+# log:
+# level: DEBUG
+api:
+  insecure: true
+
+providers:
+  docker:
+    exposedByDefault: false
+
+entryPoints:
+  web:
+    address: :443
