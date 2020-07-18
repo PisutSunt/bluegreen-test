@@ -7,7 +7,7 @@ FROM node:12.18.0-alpine3.9
 WORKDIR /app
 
 # copy package.json with dependencies
-COPY .npmrc /app/.npmrc
+# COPY .npmrc /app/.npmrc
 COPY package.json package-lock.json /app/
 
 # install all depencies

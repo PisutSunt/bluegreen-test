@@ -1,7 +1,7 @@
 version: "2"
 services: 
   db:
-    image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo/db
+    image: peterpisut/todo-db
     build: 
       context: ./todo-db
     volumes: 
@@ -12,7 +12,7 @@ services:
         aliases: 
           - todo-db
   app:
-    image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo/frontend
+    image: peterpisut/todo-app
     build: 
       context: ./todo-app
     ports: 
@@ -24,7 +24,7 @@ services:
         aliases: 
           - todo-app
   api:
-    image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo/backend
+    image: peterpisut/todo-api
     build: 
       context: ./todo-api
     ports: 
