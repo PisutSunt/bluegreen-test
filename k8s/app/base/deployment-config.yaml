@@ -1,5 +1,5 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: todo-app-kn000131
 spec:
@@ -8,15 +8,13 @@ spec:
     spec:
       containers:
       - name: todo-app-kn000131
-        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-frontend
+        image: peterpisut/todo-app
         imagePullPolicy: Always
         env:
           - name: PROXY_API_TARGET
-            value: http://todo-api-kn000131.devops-intern.svc:9000
+            value: http://todo-api-kn000131.$(NAMESPACE).svc:9000
         ports:
         - containerPort: 3000
           name: http
           protocol: TCP
       dnsPolicy: ClusterFirst
-      imagePullSecret:
-        - name: image-pull-secret-kn000131

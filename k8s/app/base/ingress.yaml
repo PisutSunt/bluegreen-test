@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: todo-app-kn000131
+spec:
+  backend:
+    serviceName: todo-api-kn000131
+    servicePort: 9000
+

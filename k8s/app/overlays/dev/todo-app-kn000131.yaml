@@ -6,8 +6,8 @@ metadata:
     cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
-  name: todo-app-kn000131-dev
-  namespace: devops-intern
+  name: todo-app-kn000131
+  namespace: argo-rollouts
 spec:
   ports:
   - name: http
@@ -20,18 +20,24 @@ spec:
     template-compiler: kustomize
   type: ClusterIP
 ---
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
     app: todo-app-kn000131
     cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
-  name: todo-app-kn000131-dev
-  namespace: devops-intern
+  name: todo-app-kn000131
+  namespace: argo-rollouts
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app-kn000131
+      cluster: ocp-test
+      group: todo-app
+      template-compiler: kustomize
   template:
     metadata:
       labels:
@@ -43,8 +49,8 @@ spec:
       containers:
       - env:
         - name: PROXY_API_TARGET
-          value: http://todo-api-kn000131.devops-intern.svc:9000
-        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-frontend
+          value: http://todo-api-kn000131.argo-rollouts.svc:9000
+        image: peterpisut/todo-app
         imagePullPolicy: Always
         name: todo-app-kn000131
         ports:
@@ -52,26 +58,18 @@ spec:
           name: http
           protocol: TCP
       dnsPolicy: ClusterFirst
-      imagePullSecret:
-      - name: image-pull-secret-kn000131
 ---
-apiVersion: route.openshift.io/v1
-kind: Route
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
   labels:
     app: todo-app-kn000131
     cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
-  name: todo-app-kn000131-dev
-  namespace: devops-intern
+  name: todo-app-kn000131
+  namespace: argo-rollouts
 spec:
-  host: todo-app-kn000131-dev.devops-intern.apps.ocp-test.kasikornbank.com.172.30.183.115.nip.io
-  port:
-    targetPort: http
-  tls:
-    termination: edge
-  to:
-    kind: Service
-    name: todo-app-kn000131-dev
-    weight: 100
+  backend:
+    serviceName: todo-api-kn000131
+    servicePort: 9000
