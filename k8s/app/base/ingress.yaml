@@ -3,7 +3,12 @@ kind: Ingress
 metadata:
   name: todo-app-kn000131
 spec:
-  backend:
-    serviceName: todo-api-kn000131
-    servicePort: 9000
+  rules:
+  - host: $(SERVICE_NAME).$(NAMESPACE).svc.cluster.local
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: todo-api-kn000131
+          servicePort: 9000
 

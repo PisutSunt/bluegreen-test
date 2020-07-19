@@ -13,9 +13,23 @@ commonLabels:
 configurations:
 - varconfig.yaml
 vars:
+- name: SERVICE_NAME
+  fieldref:
+    fieldPath: metadata.name
+  objref:
+    apiVersion: v1
+    kind: Service
+    name: todo-app-kn000131
 - name: NAMESPACE
   fieldref:
     fieldPath: metadata.namespace
+  objref:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: todo-app-kn000131
+- fieldref:
+    fieldPath: metadata.labels.cluster
+  name: LABEL_CLUSTER
   objref:
     apiVersion: apps/v1
     kind: Deployment
