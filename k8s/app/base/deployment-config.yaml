@@ -12,7 +12,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: PROXY_API_TARGET
-            value: http://todo-api-kn000131.$(NAMESPACE).svc:9000
+            value: todo-api-kn000131.$(NAMESPACE).svc.cluster.local:9000
         ports:
         - containerPort: 3000
           name: http

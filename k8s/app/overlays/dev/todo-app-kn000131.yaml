@@ -3,7 +3,6 @@ kind: Service
 metadata:
   labels:
     app: todo-app-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   name: todo-app-kn000131
@@ -15,7 +14,6 @@ spec:
     targetPort: 3000
   selector:
     app: todo-app-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   type: NodePort
@@ -25,7 +23,6 @@ kind: Deployment
 metadata:
   labels:
     app: todo-app-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   name: todo-app-kn000131
@@ -35,21 +32,19 @@ spec:
   selector:
     matchLabels:
       app: todo-app-kn000131
-      cluster: ocp-test
       group: todo-app
       template-compiler: kustomize
   template:
     metadata:
       labels:
         app: todo-app-kn000131
-        cluster: ocp-test
         group: todo-app
         template-compiler: kustomize
     spec:
       containers:
       - env:
         - name: PROXY_API_TARGET
-          value: http://todo-api-kn000131.argo-rollouts.svc:9000
+          value: todo-api-kn000131.argo-rollouts.svc.cluster.local:9000
         image: peterpisut/todo-app
         imagePullPolicy: Always
         name: todo-app-kn000131
@@ -64,7 +59,6 @@ kind: Ingress
 metadata:
   labels:
     app: todo-app-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   name: todo-app-kn000131

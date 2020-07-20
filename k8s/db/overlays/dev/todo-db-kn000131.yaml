@@ -3,7 +3,6 @@ kind: Service
 metadata:
   labels:
     app: todo-db-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   name: todo-db-kn000131
@@ -15,7 +14,6 @@ spec:
     targetPort: 27017
   selector:
     app: todo-db-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   type: ClusterIP
@@ -25,7 +23,6 @@ kind: Deployment
 metadata:
   labels:
     app: todo-db-kn000131
-    cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
   name: todo-db-kn000131
@@ -35,14 +32,12 @@ spec:
   selector:
     matchLabels:
       app: todo-db-kn000131
-      cluster: ocp-test
       group: todo-app
       template-compiler: kustomize
   template:
     metadata:
       labels:
         app: todo-db-kn000131
-        cluster: ocp-test
         group: todo-app
         template-compiler: kustomize
     spec:

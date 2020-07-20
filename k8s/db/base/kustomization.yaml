@@ -6,7 +6,6 @@ resources:
 namespace: argo-rollouts
 commonLabels:
   app: todo-db-kn000131
-  cluster: ocp-test
   group: todo-app
   template-compiler: kustomize
 configurations:
