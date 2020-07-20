@@ -27,10 +27,3 @@ vars:
     apiVersion: apps/v1
     kind: Deployment
     name: todo-app-kn000131
-- fieldref:
-    fieldPath: metadata.labels.cluster
-  name: LABEL_CLUSTER
-  objref:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: todo-app-kn000131
