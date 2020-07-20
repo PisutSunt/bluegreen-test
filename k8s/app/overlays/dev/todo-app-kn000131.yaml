@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    cloud.google.com/load-balancer-type: Internal
   labels:
     app: todo-app-kn000131
     cluster: ocp-test
@@ -18,7 +20,7 @@ spec:
     cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
-  type: ClusterIP
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -70,6 +72,11 @@ metadata:
   name: todo-app-kn000131
   namespace: argo-rollouts
 spec:
-  backend:
-    serviceName: todo-api-kn000131
-    servicePort: 9000
+  rules:
+  - host: todo-app-kn000131.argo-rollouts.svc.cluster.local
+    http:
+      paths:
+      - backend:
+          serviceName: todo-api-kn000131
+          servicePort: 9000
+        path: /*
