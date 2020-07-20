@@ -4,6 +4,6 @@ metadata:
   name: todo-app-kn000131
 spec:
   backend:
-    serviceName: todo-api-kn000131
-    servicePort: 9000
+    serviceName: todo-app-kn000131
+    servicePort: 3000
 
