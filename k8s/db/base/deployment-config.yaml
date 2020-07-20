@@ -1,5 +1,5 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: todo-db-kn000131
 spec:
@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
       - name: todo-db-kn000131
-        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-db
+        image: peterpisut/todo-db
         imagePullPolicy: Always
         ports:
         - containerPort: 27017
@@ -18,8 +18,6 @@ spec:
           - name: todo-data
             mountPath: /todo-data
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-        - name: image-pull-secret-kn000131
       volumes:
         - name: todo-data
           emptyDir: {}

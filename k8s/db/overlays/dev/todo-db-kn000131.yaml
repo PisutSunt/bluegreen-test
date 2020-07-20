@@ -6,8 +6,8 @@ metadata:
     cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
-  name: todo-db-kn000131-dev
-  namespace: devops-intern
+  name: todo-db-kn000131
+  namespace: argo-rollouts
 spec:
   ports:
   - name: mongo
@@ -20,18 +20,24 @@ spec:
     template-compiler: kustomize
   type: ClusterIP
 ---
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
     app: todo-db-kn000131
     cluster: ocp-test
     group: todo-app
     template-compiler: kustomize
-  name: todo-db-kn000131-dev
-  namespace: devops-intern
+  name: todo-db-kn000131
+  namespace: argo-rollouts
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: todo-db-kn000131
+      cluster: ocp-test
+      group: todo-app
+      template-compiler: kustomize
   template:
     metadata:
       labels:
@@ -41,7 +47,7 @@ spec:
         template-compiler: kustomize
     spec:
       containers:
-      - image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-db
+      - image: peterpisut/todo-db
         imagePullPolicy: Always
         name: todo-db-kn000131
         ports:
@@ -52,8 +58,6 @@ spec:
         - mountPath: /todo-data
           name: todo-data
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-      - name: image-pull-secret-kn000131
       volumes:
       - emptyDir: {}
         name: todo-data

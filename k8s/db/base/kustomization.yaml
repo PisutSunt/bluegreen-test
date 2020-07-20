@@ -3,15 +3,11 @@ kind: Kustomization
 resources:
 - deployment-config.yaml
 - services.yaml
-namespace: devops-intern
+namespace: argo-rollouts
 commonLabels:
   app: todo-db-kn000131
   cluster: ocp-test
   group: todo-app
   template-compiler: kustomize
-crds:
-- ./crds/openshift-deploymentconfig.json
-- ./crds/openshift-route.json
 configurations:
 - varconfig.yaml
-nameSuffix: -dev
