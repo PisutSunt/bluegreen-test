@@ -44,7 +44,7 @@ spec:
       containers:
       - env:
         - name: PROXY_API_TARGET
-          value: todo-api-kn000131.argo-rollouts.svc.cluster.local:9000
+          value: 10.44.1.28:9000
         image: peterpisut/todo-app
         imagePullPolicy: Always
         name: todo-app-kn000131
