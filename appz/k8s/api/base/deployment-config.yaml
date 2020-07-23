@@ -1,0 +1,49 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: todo-api-appz
+  labels:
+    AppVersion: x-app-version-x
+    KustomizeCommit: x-kustomize-commit-x
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: todo-api-appz
+        image: devops-cicd101-docker.artifactory.kasikornbank.com:8443/kn000131/todo-appz/api
+        imagePullPolicy: Always
+        args:
+          - nodemon
+          - bin/www
+          - --watch app.js
+          - --watch routes
+        env:
+          - name: MONGO_CONNECTION_STRING
+            value: mongodb://todo-db-appz.devops-intern.svc:27017
+
+        ports:
+        - containerPort: 9000
+          name: http
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 9000
+          failureThreshold: 5
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9000
+          failureThreshold: 5
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: image-pull-secret-kn000131

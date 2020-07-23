@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # log:
 # level: DEBUG
 api:
@@ -9,4 +10,17 @@ providers:
 
 entryPoints:
   web:
+=======
+# log:
+# level: DEBUG
+api:
+  insecure: true
+
+providers:
+  docker:
+    exposedByDefault: false
+
+entryPoints:
+  web:
+>>>>>>> d152c11c6804a46e8dea02fde17d7f99ce63072c
     address: :443

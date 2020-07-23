@@ -1,0 +1,21 @@
+version: "2"
+services:
+  db:
+    volumes: 
+      - ./todo-db/entrypoint.sh:/entrypoint.sh
+    command: /entrypoint.sh
+  app:
+    volumes: 
+      - ./todo-app/public:/app/public
+      - ./todo-app/src:/app/src
+    command: npm start
+    ports: 
+      - 3000:3000
+    
+  api:
+    ports: 
+      - 9000:9000
+    depends_on: 
+      - db
+    
+    command: nodemon bin/www --watch app.js --watch routes

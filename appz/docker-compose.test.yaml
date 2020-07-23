@@ -1,0 +1,15 @@
+version: "2"
+services:
+  db:
+    command: /entrypoint.sh
+  app:
+    volumes: 
+      - ./todo-app/public:/app/public
+      - ./todo-app/src:/app/src
+    command: npm start
+
+  api:
+    depends_on: 
+      - db
+    networks:
+      trafik: {}
