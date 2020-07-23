@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   credentials: true
 // }));
 
-app.get('/', (req, res) => {
+app.get('/hello', (req, res) => {
   res.send('hello world')
 })
 
